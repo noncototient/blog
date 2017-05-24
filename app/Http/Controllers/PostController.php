@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use Illuminate\Http\Request;
+use App\Http\Requests\CreatePostRequest;
 
 class PostController extends Controller
 {
@@ -33,16 +34,9 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreatePostRequest $request)
     {
-        $this->validate($request, [
-            'title' => 'required|max:255',
-            'body' => 'required|max:500',
-            'active' => 'required'
-        ]);
-
         Post::create($request->all());
-
         return redirect()->back()->with('success', 'Your post has been successfully published.');
     }
 

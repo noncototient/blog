@@ -24,7 +24,7 @@ class CreatePostTest extends TestCase
 
         // And submits the create post form...
         $response = $this->withExceptionHandling()->actingAs($user)->post(route('post.store'), $post);
-
+        
         // Should result in a post being stored in the database
         $this->assertDatabaseHas('posts', ['title' => $post['title'], 'body' => $post['body']]);
 
