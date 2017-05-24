@@ -20,5 +20,13 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function() {
+    Route::get('posts', 'PostController@index')->name('post.index');
+    Route::get('post/create', 'PostController@create')->name('post.create');
     Route::post('post/create', 'PostController@store')->name('post.store');
+    Route::get('post/edit/{post}', 'PostController@edit')->name('post.edit');
+    Route::patch('post/edit/{post}', 'PostController@update')->name('post.update');
+    Route::delete('post/delete/{post}', 'PostController@destroy')->name('post.delete');
 });
+
+Route::get('posts/all', 'PostController@all')->name('post.all');
+Route::get('post/show/{post}', 'PostController@show')->name('post.show');

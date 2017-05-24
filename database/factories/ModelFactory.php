@@ -27,6 +27,6 @@ $factory->define(App\Post::class, function (Faker\Generator $faker) {
     return [
         'title' => $faker->text(100),
         'body' => $faker->text(300),
-        'active' => true
+        'active' => false
     ];
 });

@@ -73,5 +73,8 @@ class CreatePostTest extends TestCase
         $this->withExceptionHandling()
             ->post(route('post.store'), $post)
             ->assertRedirect('/login');
+
+        // Just for sanity check, make sure the post was not saved to the database
+        $this->assertDatabaseMissing('posts', ['title' => $post['title']]);
      }
 }
