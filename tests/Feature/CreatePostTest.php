@@ -53,7 +53,9 @@ class CreatePostTest extends TestCase
         ]);
 
         // And then submits the create post form...
-        $response = $this->withExceptionHandling()->actingAs($user)->post(route('post.store'), $post);
+        $response = $this->withExceptionHandling()
+            ->actingAs($user)
+            ->post(route('post.store'), $post);
 
         // Should result in the database not saving the data
         $this->assertDatabaseMissing('posts', ['title' => $post['title']]);
@@ -77,7 +79,7 @@ class CreatePostTest extends TestCase
         // Should result in redirection to 'login'
         $this->withExceptionHandling()
             ->post(route('post.store'), $post)
-            ->assertRedirect('/login');
+            ->assertRedirect(route('login'));
 
         // Just for sanity check, make sure the post was not saved to the database
         $this->assertDatabaseMissing('posts', ['title' => $post['title']]);
