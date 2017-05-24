@@ -26,6 +26,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function() {
     Route::get('post/edit/{post}', 'PostController@edit')->name('post.edit');
     Route::patch('post/edit/{post}', 'PostController@update')->name('post.update');
     Route::delete('post/delete/{post}', 'PostController@destroy')->name('post.delete');
+    Route::patch('trash/post/restore/{id}', 'PostController@restore')->name('post.restore');
+    Route::delete('post/force-delete/{post}', 'PostController@forceDelete')->name('post.force.delete');
+    Route::get('trash', 'PostController@trash')->name('post.trash');
 });
 
 Route::get('posts/all', 'PostController@all')->name('post.all');
