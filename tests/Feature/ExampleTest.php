@@ -9,14 +9,15 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ExampleTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testBasicTest()
-    {
-        $response = $this->get('/');
+    use DatabaseMigrations;
+
+    /** @test */
+    public function an_authenticated_user_can_create_a_post() {
+        $user = factory('App\User')->create();
+
+        $post = factory('App\Post')->raw();
+
+        $response = $this->actingAs($user)->post(route('blog.store'), $post);
 
         $response->assertStatus(200);
     }
