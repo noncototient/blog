@@ -27,7 +27,8 @@ class DeletePostTest extends TestCase
         ]);
 
         // Attemp to soft delete that post...
-        $response = $this->actingAs($user)->delete(route('post.delete', $post->id));
+        $response = $this->actingAs($user)
+            ->delete(route('post.delete', $post->id));
 
         // Should update that post deleted_at column...
         $this->assertSoftDeleted('posts', ['title' => $post->title]);
@@ -50,7 +51,8 @@ class DeletePostTest extends TestCase
         ]);
 
         // While another, unauthenticated user tries to delete this post...
-        $response = $this->withExceptionHandling()->delete(route('post.delete', $post->id));
+        $response = $this->withExceptionHandling()
+            ->delete(route('post.delete', $post->id));
 
         // Is redirected to the login page.
         $response->assertRedirect(route('login'));
@@ -70,16 +72,22 @@ class DeletePostTest extends TestCase
         ]);
 
         // That has been soft deleted (placed in trash)...
-        $this->actingAs($user)->delete(route('post.delete', $post->id));
+        $this->actingAs($user)
+            ->delete(route('post.delete', $post->id));
 
         // And tries to force delete it from the database...
-        $response = $this->actingAs($user)->delete(route('post.force.delete', $post->id));
+        $response = $this->actingAs($user)
+            ->delete(route('post.force.delete', $post->id));
 
         // Should result in the post being deleted from the database...
-        $this->assertDatabaseMissing('posts', ['title' => $post->title, 'body' => $post->body]);
+        $this->assertDatabaseMissing('posts', [
+            'title' => $post->title,
+            'body' => $post->body
+        ]);
 
         // And user being redirected back to posts trash page with a success message.
-        $response->assertRedirect(route('post.trash'))->assertSessionHas('success');
+        $response->assertRedirect(route('post.trash'))
+            ->assertSessionHas('success');
     }
 
     /** @test */
@@ -97,10 +105,14 @@ class DeletePostTest extends TestCase
         ]);
 
         // And then an unauthenticated user tries to force delete that post...
-        $response = $this->withExceptionHandling()->delete(route('post.force.delete', $post->fresh()->id));
+        $response = $this->withExceptionHandling()
+            ->delete(route('post.force.delete', $post->fresh()->id));
 
         // Should result in the post still being in the database...
-        $this->assertDatabaseHas('posts', ['title' => $post->title, 'body' => $post->body]);
+        $this->assertDatabaseHas('posts', [
+            'title' => $post->title,
+            'body' => $post->body
+        ]);
 
         // Should result in the user being redirect to the login page.
         $response->assertRedirect(route('login'));
@@ -121,13 +133,19 @@ class DeletePostTest extends TestCase
         ]);
 
         // Who then tries to restore the post...
-        $response = $this->actingAs($user)->patch(route('post.restore', $post->id));
+        $response = $this->actingAs($user)
+            ->patch(route('post.restore', $post->id));
 
         // Should result in the post being restored...
-        $this->assertDatabaseHas('posts', ['title' => $post->title, 'body' => $post->body, 'deleted_at' => null]);
+        $this->assertDatabaseHas('posts', [
+            'title' => $post->title,
+            'body' => $post->body,
+            'deleted_at' => null,
+        ]);
 
         // And user being redirected back to the post trash page with success message.
-        $response->assertRedirect(route('post.trash'))->assertSessionHas('success');
+        $response->assertRedirect(route('post.trash'))
+            ->assertSessionHas('success');
     }
 }
 

@@ -24,13 +24,18 @@ class CreatePostTest extends TestCase
         ]);
 
         // And submits the create post form...
-        $response = $this->actingAs($user)->post(route('post.store'), $post);
+        $response = $this->actingAs($user)
+            ->post(route('post.store'), $post);
 
         // Should result in a post being stored in the database
-        $this->assertDatabaseHas('posts', ['title' => $post['title'], 'body' => $post['body']]);
+        $this->assertDatabaseHas('posts', [
+            'title' => $post['title'],
+            'body' => $post['body']
+        ]);
 
         // And redirect the user with a success message
-        $response->assertSessionHas('success', 'Your post has been successfully published.')->assertStatus(302);
+        $response->assertRedirect(route('post.index'))
+            ->assertSessionHas('success', 'Your post has been successfully published.');
     }
 
     /** @test */
