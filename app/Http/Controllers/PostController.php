@@ -35,7 +35,15 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required|max:255',
+            'body' => 'required|max:500',
+            'active' => 'required'
+        ]);
+
+        Post::create($request->all());
+
+        return redirect()->back()->with('success', 'Your post has been successfully published.');
     }
 
     /**
