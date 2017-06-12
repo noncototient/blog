@@ -15,6 +15,10 @@ Route::get('/', function () {
     return redirect('posts/all');
 });
 
+Route::get('/home', function () {
+    return redirect()->route('post.index');
+});
+
 Auth::routes();
 
 Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function() {

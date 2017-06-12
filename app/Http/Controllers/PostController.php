@@ -120,7 +120,7 @@ class PostController extends Controller
      */
     public function all()
     {
-        $posts = Post::where('active')->latest()->paginate(10);
+        $posts = Post::where('active', 1)->latest()->paginate(10);
 
         return view('pages.posts.index', compact('posts'));
     }
